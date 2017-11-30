@@ -44,6 +44,12 @@ type buildOptions struct {
 	memory         opts.MemBytes
 	memorySwap     opts.MemSwapBytes
 	shmSize        opts.MemBytes
+	blkioReadBpsDevice   string
+	blkioWriteBpsDevice  string
+	blkioReadIOpsDevice  string
+	blkioWriteIOpsDevice string
+	ioMaximumIOps        uint64 // Windows only
+	ioMaximumBandwidth   uint64 // Windows only
 	cpuShares      int64
 	cpuPeriod      int64
 	cpuQuota       int64
@@ -113,6 +119,12 @@ func NewBuildCommand(dockerCli command.Cli) *cobra.Command {
 	flags.VarP(&options.memory, "memory", "m", "Memory limit")
 	flags.Var(&options.memorySwap, "memory-swap", "Swap limit equal to memory plus swap: '-1' to enable unlimited swap")
 	flags.Var(&options.shmSize, "shm-size", "Size of /dev/shm")
+	flags.StringVar(&options.blkioReadBpsDevice, "device-read-bps", "", "Limit read rate from a device")
+	flags.StringVar(&options.blkioWriteBpsDevice, "device-write-bps", "", "Limit write rate to a device")
+	flags.StringVar(&options.blkioReadIOpsDevice, "device-read-iops", "", "Limit read rate (IO per second) from a device")
+	flags.StringVar(&options.blkioWriteIOpsDevice, "device-write-iops", "", "Limit write rate (IO per second) to a device")
+	flags.Uint64Var(&options.ioMaximumBandwidth, "io-maxbandwidth", 0, "Maximum IO bandwidth limit (Windows only)")
+	flags.Uint64Var(&options.ioMaximumIOps, "io-maxiops", 0, "Maximum IOps limit (Windows only)")
 	flags.Int64VarP(&options.cpuShares, "cpu-shares", "c", 0, "CPU shares (relative weight)")
 	flags.Int64Var(&options.cpuPeriod, "cpu-period", 0, "Limit the CPU CFS (Completely Fair Scheduler) period")
 	flags.Int64Var(&options.cpuQuota, "cpu-quota", 0, "Limit the CPU CFS (Completely Fair Scheduler) quota")
@@ -357,6 +369,12 @@ func runBuild(dockerCli command.Cli, options buildOptions) error {
 		ForceRemove:    options.forceRm,
 		PullParent:     options.pull,
 		Isolation:      container.Isolation(options.isolation),
+		BlkioReadBpsDevice: options.blkioReadBpsDevice,
+		BlkioWriteBpsDevice: options.blkioWriteBpsDevice,
+		BlkioReadIOpsDevice: options.blkioReadIOpsDevice,
+		BlkioWriteIOpsDevice: options.blkioWriteIOpsDevice,
+		IOMaximumIOps: options.ioMaximumIOps,
+		IOMaximumBandwidth: options.ioMaximumBandwidth,
 		CPUSetCPUs:     options.cpuSetCpus,
 		CPUSetMems:     options.cpuSetMems,
 		CPUShares:      options.cpuShares,

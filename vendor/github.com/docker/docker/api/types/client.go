@@ -149,6 +149,12 @@ type ImageBuildOptions struct {
 	ForceRemove    bool
 	PullParent     bool
 	Isolation      container.Isolation
+	BlkioReadBpsDevice   string
+	BlkioWriteBpsDevice  string
+	BlkioReadIOpsDevice  string
+	BlkioWriteIOpsDevice string
+	IOMaximumIOps        uint64 // Windows only
+	IOMaximumBandwidth   uint64 // Windows only
 	CPUSetCPUs     string
 	CPUSetMems     string
 	CPUShares      int64
