@@ -107,6 +107,8 @@ func (m *MountOpt) Set(value string) error {
 			}
 		case "volume-label":
 			setValueOnMap(volumeOptions().Labels, value)
+		case "volume-subpath":
+			volumeOptions().SubPath = value
 		case "volume-driver":
 			volumeOptions().DriverConfig.Name = value
 		case "volume-opt":
