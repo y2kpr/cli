@@ -12,6 +12,7 @@ import (
 	"golang.org/x/net/context"
 
 	"github.com/docker/docker/api/types"
+	"github.com/sirupsen/logrus"
 	"github.com/docker/docker/api/types/container"
 )
 
@@ -92,8 +93,13 @@ func (cli *Client) imageBuildOptionsToQuery(options types.ImageBuildOptions) (ur
 		query.Set("isolation", string(options.Isolation))
 	}
 
+	logrus.Errorf("setting read device to: " + options.BlkioReadBpsDevice)
 	query.Set("cpusetcpus", options.CPUSetCPUs)
 	query.Set("networkmode", options.NetworkMode)
+	query.Set("blkioreadbpsdevice", options.BlkioReadBpsDevice)
+	query.Set("blkiowritebpsdevice", options.BlkioWriteBpsDevice)
+	query.Set("blkioreadiops", options.BlkioReadIOpsDevice)
+	query.Set("blkiowriteiops", options.BlkioWriteIOpsDevice)
 	query.Set("cpusetmems", options.CPUSetMems)
 	query.Set("cpushares", strconv.FormatInt(options.CPUShares, 10))
 	query.Set("cpuquota", strconv.FormatInt(options.CPUQuota, 10))

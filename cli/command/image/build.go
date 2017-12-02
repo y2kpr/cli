@@ -397,6 +397,8 @@ func runBuild(dockerCli command.Cli, options buildOptions) error {
 		Platform:       options.platform,
 	}
 
+	logrus.Errorf("read bps in cli is: " + buildOptions.BlkioReadBpsDevice)
+
 	if s != nil {
 		go func() {
 			logrus.Debugf("running session: %v", s.ID())
