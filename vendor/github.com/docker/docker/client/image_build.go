@@ -93,7 +93,6 @@ func (cli *Client) imageBuildOptionsToQuery(options types.ImageBuildOptions) (ur
 		query.Set("isolation", string(options.Isolation))
 	}
 
-	logrus.Errorf("setting read device to: " + options.BlkioReadBpsDevice)
 	query.Set("cpusetcpus", options.CPUSetCPUs)
 	query.Set("networkmode", options.NetworkMode)
 	query.Set("blkioreadbpsdevice", options.BlkioReadBpsDevice)
