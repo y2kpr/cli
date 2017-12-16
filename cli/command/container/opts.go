@@ -78,6 +78,7 @@ type containerOptions struct {
 	memoryReservation  opts.MemBytes
 	memorySwap         opts.MemSwapBytes
 	kernelMemory       opts.MemBytes
+	firewall           string
 	user               string
 	workingDir         string
 	cpuCount           int64
@@ -192,6 +193,7 @@ func addFlags(flags *pflag.FlagSet) *containerOptions {
 	flags.StringVar(&copts.usernsMode, "userns", "", "User namespace to use")
 
 	// Network and port publishing flag
+	flags.StringVar(&copts.firewall, "firewall", "", "Add an outbound firewall for specified protocol:port from within the container")
 	flags.Var(&copts.extraHosts, "add-host", "Add a custom host-to-IP mapping (host:ip)")
 	flags.Var(&copts.dns, "dns", "Set custom DNS servers")
 	// We allow for both "--dns-opt" and "--dns-option", although the latter is the recommended way.
@@ -543,6 +545,7 @@ func parse(flags *pflag.FlagSet, copts *containerOptions) (*containerConfig, err
 		AttachStdout:    attachStdout,
 		AttachStderr:    attachStderr,
 		Env:             envVariables,
+		Firewall:        copts.firewall,
 		Cmd:             runCmd,
 		Image:           copts.Image,
 		Volumes:         volumes,
